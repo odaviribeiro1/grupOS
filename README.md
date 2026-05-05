@@ -6,21 +6,21 @@ Este projeto é **self-hosted**: cada usuário roda própria instância em Supab
 
 ## 🚀 Como rodar (passo a passo)
 
-### Caminho recomendado: setup interativo via Claude Code
+### Caminho recomendado: setup automático via Claude Code
 
-Se você tem [Claude Code](https://claude.com/claude-code) instalado, esse é o caminho mais simples — Claude Code te pergunta cada credencial, valida tudo, e configura sua instância sozinho.
+Se você tem [Claude Code](https://claude.com/claude-code) instalado, esse é o caminho mais simples — Claude Code lê o `START.md` deste repositório, te pergunta cada credencial, valida tudo, e configura sua instância sozinho.
 
 1. Crie um projeto novo no Supabase em https://supabase.com/dashboard.
 2. Faça fork deste repositório no GitHub.
 3. Clone o seu fork localmente: `git clone https://github.com/[seu-usuario]/grupOS.git`
 4. Entre na pasta: `cd grupOS`
 5. Abra Claude Code: `claude`
-6. Abra o arquivo [`BOOTSTRAP.md`](./BOOTSTRAP.md) deste repositório, copie o bloco "Prompt para Claude Code", e cole na sessão.
-7. Responda às perguntas — Claude Code aplica migrations, deploya Edge Functions e cria seu admin.
+6. Digite na sessão: **"Leia o arquivo START.md e execute tudo"**
+7. Responda às perguntas conforme Claude Code as faz — ele aplica migrations, deploya Edge Functions e cria seu admin.
 8. Quando terminar, faça deploy do frontend na Vercel preenchendo `VITE_SUPABASE_URL` e `VITE_SUPABASE_ANON_KEY` (Claude Code te lembra dos valores no final).
 9. Acesse a URL gerada pela Vercel e faça login com o admin criado.
 
-Veja [`BOOTSTRAP.md`](./BOOTSTRAP.md) para detalhes.
+Veja [`START.md`](./START.md) para a lista de credenciais que você precisa ter em mãos antes de começar.
 
 ### Caminho manual (sem Claude Code)
 
@@ -85,7 +85,7 @@ scripts/               run-migration.mjs, deploy-function.mjs
 
 ## 📚 Documentação adicional
 
-- [`BOOTSTRAP.md`](./BOOTSTRAP.md) — setup interativo via Claude Code
+- [`START.md`](./START.md) — setup automático via Claude Code
 
 ## 📄 Licença
 

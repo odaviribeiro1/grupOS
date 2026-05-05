@@ -1,22 +1,16 @@
-# BOOTSTRAP — Setup interativo via Claude Code
+# START — Setup da sua instância
 
-> Este arquivo contém um prompt pronto para você colar em uma sessão de Claude Code rodando na pasta deste repositório recém-clonado.
+> Bem-vindo! Este arquivo configura sua instância do **GrupOS** na sua infraestrutura Supabase + Vercel.
 >
-> Em ~10 minutos, Claude Code vai te perguntar suas credenciais uma a uma, configurar o projeto Supabase, aplicar todas as migrations, deployar as Edge Functions, criar sua conta de admin, e te entregar o passo final do deploy do frontend na Vercel.
+> 1. Crie um projeto novo no Supabase em https://supabase.com/dashboard (anote URL, anon key, service_role key e Project Reference em Project Settings → API e General).
+> 2. Crie um Personal Access Token Supabase em https://supabase.com/dashboard/account/tokens (escopo "All access").
+> 3. Tenha em mãos as credenciais listadas mais abaixo.
+> 4. Abra um terminal na raiz deste repositório clonado.
+> 5. Execute `claude` (Claude Code precisa estar instalado e autorizado).
+> 6. Digite na sessão: **"Leia o arquivo START.md e execute tudo"**
+> 7. Responda às perguntas conforme Claude Code as faz.
 >
-> Pré-requisitos: Node 20+, Claude Code instalado e autorizado, git, e este repositório clonado.
-
----
-
-## Como usar
-
-1. Crie um projeto novo no Supabase em https://supabase.com/dashboard. Anote o Project Reference (em Project Settings → General).
-2. Crie um Personal Access Token Supabase em https://supabase.com/dashboard/account/tokens. Marque escopo "All access". Anote o token.
-3. Tenha em mãos as credenciais que serão pedidas (lista abaixo).
-4. Abra um terminal na raiz deste repositório.
-5. Execute `claude` (precisa estar instalado e autorizado).
-6. Cole o prompt completo abaixo (a partir da linha "Prompt para Claude Code") na sessão.
-7. Responda às perguntas conforme Claude Code as faz, uma a uma.
+> Em ~10 minutos, sua instância estará configurada: migrations aplicadas, Edge Functions deployadas, conta de admin criada. Depois é só fazer o deploy do frontend na Vercel.
 
 ---
 
@@ -29,15 +23,15 @@
 - **Supabase Personal Access Token** — formato `sbp_...`. Em https://supabase.com/dashboard/account/tokens.
 - **Email e senha** que você vai usar como admin desta instância.
 
-> Observação: este projeto **não** requer chaves de provedores externos (OpenAI, UAZAPI) em variáveis de ambiente do servidor. Essas chaves são salvas por usuário no banco durante o onboarding pós-login (passo via wizard). O Bootstrap aqui só cuida da infra Supabase + admin.
+> Observação: este projeto **não** requer chaves de provedores externos (OpenAI, UAZAPI) em variáveis de ambiente do servidor. Essas chaves são salvas por usuário no banco durante o onboarding pós-login (wizard). O setup aqui só cuida da infra Supabase + admin.
 
 ---
 
-## Prompt para Claude Code
+## Instruções para Claude Code
 
-> Cole tudo abaixo desta linha na sessão Claude Code aberta na raiz deste repositório.
+> A partir daqui, este arquivo é lido pelo Claude Code do aluno e contém as instruções que **você (Claude Code) deve executar** quando o aluno disser "Leia o arquivo START.md e execute tudo". Siga rigorosamente.
 
-Você é responsável por configurar este projeto self-hosted (GrupOS — plataforma para análise de grupos do WhatsApp) na infraestrutura Supabase do usuário (aluno). O fluxo é interativo: pedir uma credencial por vez, validar imediatamente, e só ao final aplicar mudanças no Supabase do usuário.
+Você é responsável por configurar este projeto self-hosted (**GrupOS** — plataforma para análise de grupos do WhatsApp) na infraestrutura Supabase do usuário (aluno). O fluxo é interativo: pergunte uma credencial por vez, valide imediatamente, e só ao final aplique mudanças no Supabase do usuário.
 
 ### Princípios
 
@@ -52,8 +46,8 @@ Você é responsável por configurar este projeto self-hosted (GrupOS — plataf
 
 1. Confirmar `node --version` retorna 20+.
 2. Confirmar `pwd` está na raiz do repositório (existe `package.json` com `"name": "grupos"` e pasta `supabase/`).
-3. `git status` deve estar limpo.
-4. Ler `.env.example` na raiz e confirmar os 3 grupos: Frontend (`VITE_*`), Edge Functions Secrets (vazio para este projeto), Scripts/Local.
+3. `git status` deve estar limpo (alertar se sujo, mas não bloquear).
+4. Ler `.env.example` na raiz — confirmar os 3 grupos: Frontend (`VITE_*`), Edge Functions Secrets (vazio neste projeto), Scripts/Local.
 5. Listar `supabase/migrations/*.sql` em ordem alfabética e `supabase/functions/*/` (slugs das funções).
 
 ### Sequência interativa
@@ -62,8 +56,8 @@ Você é responsável por configurar este projeto self-hosted (GrupOS — plataf
 
 Mostre ao aluno em uma única mensagem:
 - Projeto detectado: **GrupOS** (`grupos` em package.json)
-- Lista de migrations encontradas: <listar arquivos `supabase/migrations/*.sql`>
-- Lista de Edge Functions encontradas: <listar slugs em `supabase/functions/`>
+- Migrations encontradas: <listar arquivos de `supabase/migrations/*.sql`>
+- Edge Functions encontradas: <listar slugs em `supabase/functions/`>
 - Variáveis a configurar: `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY` (Vercel) + admin (email/senha)
 - Aviso: "Vou pedir cada credencial uma por vez. Você pode pausar e retomar — nada é gravado até a confirmação final."
 
@@ -74,12 +68,14 @@ Aguarde "ok" / "vai" / "pode" antes de prosseguir.
 Perguntar: "Cole sua Supabase URL (formato `https://xxxx.supabase.co`)."
 
 Validar:
-- Regex `^https://[a-z0-9]{20,}\.supabase\.co$`
+- Regex `^https://[a-z0-9]{20,}\.supabase\.co$`.
 - `curl -sI {URL}/rest/v1/ -H "apikey: dummy"` → esperado `401` (confirma que a URL existe).
+
+Se inválido, explicar o erro e pedir de novo.
 
 #### Passo 3 — Supabase anon key
 
-Perguntar: "Cole sua Supabase anon key (começa com `eyJ`)."
+Perguntar: "Cole sua Supabase anon key (JWT longo, começa com `eyJ`)."
 
 Validar:
 - Começa com `eyJ`.
@@ -134,7 +130,7 @@ Perguntar (uma a uma):
 #### Passo 9 — Resumo e confirmação
 
 Em uma mensagem única, mostrar:
-- ✅ Supabase URL: `[mostrar truncado]`
+- ✅ Supabase URL: `[truncado]`
 - ✅ Anon key: `[primeiros 12 chars]...`
 - ✅ Service role: `[primeiros 12 chars]...`
 - ✅ Project ref: `[ref]`
@@ -145,17 +141,17 @@ Listar **as ações que serão executadas** em ordem:
 
 1. Criar arquivo `.env.local` na raiz com `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, `VITE_DEV_MODE=false`, `SUPABASE_ACCESS_TOKEN`, `SUPABASE_PROJECT_REF`.
 2. Rodar `npm install` se `node_modules/` não existir.
-3. Aplicar migrations: para cada `supabase/migrations/*.sql` em ordem alfabética, rodar:
+3. Aplicar migrations: para cada `supabase/migrations/*.sql` em ordem alfabética:
    ```bash
    SUPABASE_ACCESS_TOKEN={TOKEN} node scripts/run-migration.mjs {PROJECT_REF} {file}
    ```
-   (Este projeto não tem npm script `db:push` — usa o `node scripts/run-migration.mjs` direto.)
-4. Deploy de Edge Functions: para cada slug em `supabase/functions/*/`, rodar:
+   (Este projeto não tem `npm run db:push` — usa o `node scripts/run-migration.mjs` direto.)
+4. Deploy de Edge Functions: para cada slug em `supabase/functions/*/`:
    ```bash
    SUPABASE_ACCESS_TOKEN={TOKEN} node scripts/deploy-function.mjs {PROJECT_REF} {slug}
    ```
 5. Criar usuário admin via Supabase Auth Admin API.
-6. Validar que o trigger de "primeiro user vira admin" funcionou (consultar `grupos.users` ou tabela equivalente do schema).
+6. Validar que o trigger de "primeiro user vira admin" funcionou (consulta na tabela `grupos.users` ou equivalente).
 
 Pedir confirmação: "Digite SIM (em maiúsculas) para executar tudo acima. Qualquer outra coisa cancela e nenhuma mudança é feita."
 
@@ -181,7 +177,7 @@ Se `node_modules/` não existe: `npm install`. Mostrar saída resumida.
 
 **10.3 — Aplicar migrations**
 
-Listar os arquivos com `ls supabase/migrations/*.sql | sort`. Para cada arquivo, executar:
+Listar arquivos: `ls supabase/migrations/*.sql | sort`. Para cada arquivo:
 
 ```bash
 SUPABASE_ACCESS_TOKEN={TOKEN} node scripts/run-migration.mjs {PROJECT_REF} {file}
@@ -219,23 +215,16 @@ Esperado: `200` com `id` de usuário no JSON.
 
 **10.7 — Validar trigger de admin**
 
-Aguardar 2-3s. Consultar via Management API:
+Aguardar 2-3s. Consultar via Management API SQL endpoint:
 
 ```bash
-curl -s "{SUPABASE_URL}/rest/v1/users?email=eq.{EMAIL}&select=id,role" \
-  -H "apikey: {SERVICE_ROLE}" \
-  -H "Authorization: Bearer {SERVICE_ROLE}"
+curl -s "https://api.supabase.com/v1/projects/{PROJECT_REF}/database/query" \
+  -H "Authorization: Bearer {ACCESS_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{"query":"SELECT id, role FROM grupos.users WHERE email = '\''{EMAIL}'\'';"}'
 ```
 
-> Nota: esta tabela está no schema `grupos`. Se o REST API não expõe o schema diretamente, pode precisar usar a Management API SQL endpoint:
-> ```bash
-> curl -s "https://api.supabase.com/v1/projects/{PROJECT_REF}/database/query" \
->   -H "Authorization: Bearer {ACCESS_TOKEN}" \
->   -H "Content-Type: application/json" \
->   -d '{"query":"SELECT id, role FROM grupos.users WHERE email = '\''{EMAIL}'\'';"}'
-> ```
-
-Confirmar role `admin` (ou nomenclatura equivalente do schema). Se não for, alertar mas não falhar — o schema pode ter promoção de admin via fluxo diferente.
+Confirmar role `admin` (ou nomenclatura equivalente do schema). Se não for, alertar mas não falhar — o schema pode usar fluxo de promoção diferente.
 
 #### Passo 11 — Relatório final
 
