@@ -55,6 +55,24 @@ Crie sua conta admin acessando a aplicação após deploy — o primeiro usuári
 2. Na tela de Environment Variables, preencha `VITE_SUPABASE_URL` e `VITE_SUPABASE_ANON_KEY`.
 3. Deploy.
 
+## 🔄 Atualizar para a versão mais recente
+
+Quando o upstream tiver atualizações novas:
+
+1. No seu fork no GitHub, clique em **Sync fork** (botão no topo do repo).
+2. No terminal, dentro do projeto: `git pull`
+3. Abra Claude Code: `claude`
+4. Digite: **"Leia o arquivo UPDATE.md e execute tudo"**
+5. Pronto. Migrations novas aplicadas, Edge Functions redeployadas, frontend redeploya sozinho na Vercel.
+
+Veja [`UPDATE.md`](./UPDATE.md) para detalhes.
+
+## 🛠️ Customizando o código
+
+Se você quer fazer customizações no código (não apenas via UI), faça em `src/customizations/`. Esse diretório é "zona livre" — o upstream nunca edita arquivos lá, evitando conflitos quando você atualizar.
+
+Veja [`src/customizations/README.md`](./src/customizations/README.md) para detalhes.
+
 ---
 
 ## 🧱 Stack
@@ -86,6 +104,9 @@ scripts/               run-migration.mjs, deploy-function.mjs
 ## 📚 Documentação adicional
 
 - [`START.md`](./START.md) — setup automático via Claude Code
+- [`UPDATE.md`](./UPDATE.md) — aplicar atualizações futuras
+- [`CONTRIBUTING.md`](./CONTRIBUTING.md) — como contribuir + convenção de commits
+- [`src/customizations/README.md`](./src/customizations/README.md) — onde colocar customizações sem conflitar com upstream
 
 ## 📄 Licença
 

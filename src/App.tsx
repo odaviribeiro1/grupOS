@@ -10,6 +10,7 @@ import { RequireAdmin } from "@/auth/RequireAdmin";
 import { AppLayout } from "@/layout/AppLayout";
 import { LoginPage } from "@/pages/LoginPage";
 import { SetPasswordPage } from "@/pages/SetPasswordPage";
+import { InvitePage } from "@/pages/InvitePage";
 import { OnboardingPage } from "@/pages/OnboardingPage";
 import { GruposPage } from "@/pages/GruposPage";
 import { GrupoDetailPage } from "@/pages/GrupoDetailPage";
@@ -25,6 +26,7 @@ export default function App() {
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/set-password" element={<SetPasswordPage />} />
+          <Route path="/invite" element={<InvitePage />} />
 
           <Route
             path="/onboarding"

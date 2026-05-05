@@ -5,7 +5,7 @@ export function RequireAdmin({ children }: { children: React.ReactNode }) {
   const { role, loading } = useAuth();
 
   if (loading) return null;
-  if (role !== "admin") return <Navigate to="/grupos" replace />;
+  if (role !== "owner" && role !== "admin") return <Navigate to="/grupos" replace />;
 
   return <>{children}</>;
 }
